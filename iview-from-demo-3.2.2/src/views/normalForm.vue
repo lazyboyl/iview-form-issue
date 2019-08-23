@@ -18,6 +18,7 @@
         <Input type="text" :maxlength=100 v-model="normalForm[item.code]"
                placeholder="请输入国际化对应的值"/>
       </FormItem>
+      <Button type="info" @click="resetForm">重置表单</Button>
     </Form>
   </Modal>
 </template>
@@ -39,7 +40,6 @@
     },
     methods: {
       ok() {
-        this.$refs['normalForm'].resetFields();
         console.log(JSON.stringify(this.normalForm))
         this.$refs['normalForm'].validate((valid) => {
           setTimeout(() => {
@@ -49,6 +49,10 @@
             });
           }, 1000);
         })
+      },
+      resetForm(){
+        console.log(JSON.stringify(this.normalForm))
+        this.$refs['normalForm'].resetFields();
       }
     },
     mounted() {

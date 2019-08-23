@@ -1,5 +1,5 @@
 <template>
-  <Modal v-model="show" title="新增国际化信息" @on-ok="ok" :loading="loading"  :mask-closable="false">
+  <Modal v-model="show" title="新增国际化信息" @on-ok="ok" :loading="loading" :mask-closable="false">
     <Form ref="normalForm" :model="normalForm">
       <FormItem label="节点名称" prop="treeName" :rules="{required: true, message: '节点名称不能为空！', trigger: 'blur'}">
         <Input type="text" :maxlength=50 v-model="normalForm.treeName"
@@ -9,13 +9,13 @@
         <Input type="text" :maxlength=50 v-model="normalForm.treeCode"
                placeholder="请输入国际化的节点编码"/>
       </FormItem>
-      <FormItem v-for="(item,index) in languages"
+      <FormItem v-for="(item,index) in normalForm.languags"
                 :key="index"
                 :label="item.name"
-                :prop="item.code"
+                :prop="'languags.'+index + '.valueInfo'"
                 :rules="{required: true, message: '国际化对应的值不能为空！', trigger: 'blur'}"
       >
-        <Input type="text" :maxlength=100 v-model="normalForm[item.code]"
+        <Input type="text" :maxlength=100 v-model="item.valueInfo"
                placeholder="请输入国际化对应的值"/>
       </FormItem>
       <Button type="info" @click="resetForm">重置表单</Button>
@@ -24,18 +24,16 @@
 </template>
 <script>
   export default {
-    name: 'normalForm',
+    name: 'otherForm',
     data() {
       return {
         show: true,
         loading: true,
         normalForm: {
           treeName: '',
-          treeCode: ''
-        },
-        languages: [
-
-        ]
+          treeCode: '',
+          languags: []
+        }
       }
     },
     methods: {
@@ -50,31 +48,30 @@
           }, 1000);
         })
       },
-      resetForm(){
-        // for(let a in this.normalForm){
-        //   this.normalForm[a] = '';
-        //   console.log(a + '---' + this.normalForm[a])
-        // }
+      resetForm() {
+        console.log(JSON.stringify(this.normalForm))
         this.$refs['normalForm'].resetFields();
       }
     },
     mounted() {
-      this.languages.push({
+      this.normalForm.languags.push({
         id: '1',
         code: 'zh-CN',
-        name: '简体中文'
+        name: '简体中文',
+        valueInfo: ''
       })
-      this.languages.push({
+      this.normalForm.languags.push({
         id: '2',
         code: 'zh-TW',
-        name: '繁体中文'
+        name: '繁体中文',
+        valueInfo: ''
       })
-      this.languages.push({
+      this.normalForm.languags.push({
         id: '1',
         code: 'en-US',
-        name: '英文'
+        name: '英文',
+        valueInfo: ''
       })
-
     }
   }
 </script>
